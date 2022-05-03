@@ -49,6 +49,7 @@ static inline void sommeil_nanoS(unsigned int clock_port, int sleep_type, time_t
 
 //emet un signal carre sur le bus
 int signal(float temps, float frequence){
+    temps = temps /1000; //on transforme en nano seconde
     printf("T: %f, F: %f\n", temps, frequence);
 
     //calcule la periode en fonctionde la frequence (en nano S)
@@ -56,7 +57,7 @@ int signal(float temps, float frequence){
 
     //calcule du début et de la fin en nano S
     uint64_t temps_debut = temps_nanoS();
-    uint64_t temps_fin = temps_debut + temps * NSEC_PER_SEC;
+    uint64_t temps_fin = temps_debut +(temps * NSEC_PER_SEC);
 
     while(temps_nanoS() < temps_fin){
         uint64_t milieu = temps_debut + periode / 2;
@@ -79,7 +80,7 @@ int lecture_fichier(char * path){
 
     float temps, frequence;
     while (fscanf(fichier, "%f %f", &temps, &frequence) != EOF) {
-        signal(temps, frequence);
+        signal(1.0 * temps, frequence);
     }
 }
 
