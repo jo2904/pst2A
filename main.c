@@ -41,8 +41,8 @@ static inline uint64_t temps_nanoS(void){
 }
 
 //sommeil en nanosecondes
-static inline void sommeil_nanoS(unsigned int clock_port, int sleep_type, time_t seconde, long nanoseconde, unsigned int *reste){
-    unsigned int temps = { seconde, nanoseconde };
+static inline void sommeil_nanoS(unsigned int clock_port, int sleep_type, time_t seconde, long nanoseconde, struct timespec *reste){
+    struct timespec temps = { seconde, nanoseconde };
     int res = clock_nanosleep(sleep_type, TIMER_ABSTIME, &temps, reste);
     if(res < 0){printf("erreure clock_nanosleep\n");exit(1);}
 }
@@ -57,7 +57,7 @@ int signal(float temps, float frequence){
 
     //calcule du début et de la fin en nano S
     uint64_t temps_debut = temps_nanoS();
-    uint64_t temps_fin = temps_debut +(temps * NSEC_PER_SEC);
+    uint64_t temps_fin = temps_debut + (uint64_t)(temps * NSEC_PER_SEC);
 
     while(temps_nanoS() < temps_fin){
         uint64_t milieu = temps_debut + periode / 2;
