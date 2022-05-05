@@ -24,6 +24,10 @@ __m128i zero;
 #ifndef NSEC_PER_SEC
 #define NSEC_PER_SEC 1000000000ull
 #endif
+// Si continu == 1
+#ifndef continu
+#define continu 1
+#endif
 
 //definition de la clock
 unsigned int clock_port;
@@ -79,9 +83,15 @@ int lecture_fichier(char * path){
     if(!fichier){printf("erreure fopen\n");exit(1);}
 
     float temps, frequence;
-    while (fscanf(fichier, "%f %f", &temps, &frequence) != EOF) {
-        signal(1.0 * temps, frequence);
+    while(1){
+        while (fscanf(fichier, "%f %f", &temps, &frequence) != EOF) {
+            signal(1.0 * temps, frequence);
+        }
+        if(continu == 1){
+            rewind(fichier);
+        }
     }
+
 }
 
 
